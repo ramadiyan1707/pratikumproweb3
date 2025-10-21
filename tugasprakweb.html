@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Demo Proses JavaScript</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: white;
+            color: black;
+            padding: 20px;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: white;
+        }
+
+        .button {
+            padding: 10px 20px;
+            margin: 5px;
+            color: rgb(0, 0, 0);
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        #modeButton {
+            background-color: #4c4c4c;
+            color: white;
+        }
+
+        #card-container {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .card {
+            background-color: #f1f1f1;
+            padding: 15px;
+            gap: 10px;
+            width: 25%;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            position: relative;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bolder;
+        }
+
+        .card .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+
+            color: red;
+            border: none;
+            cursor: pointer;
+        }
+
+        body.dark-mode .card {
+            background-color: #2c2c2c;
+            border-color: #444;
+        }
+
+        .popup-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: none;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            z-index: 1000;
+        }
+
+        .popup-form input {
+            padding: 8px;
+            margin: 5px 0;
+            width: 90%;
+        }
+        .popup-form button {
+            width: 95%;
+            background-color: gray;
+        }
+        .popup-form button:hover {
+            background-color: rgb(241, 23, 23);
+        }
+        body.dark-mode .popup-form {
+            background-color: #2c2c2c;
+            color: white;
+            border-color: #999;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Demo Proses JavaScript</h1>
+
+    <button class="button" id="modeButton" onclick="toggleDarkMode()">🌙 Mode Malam</button>
+    <button class="button" onclick="tambahCard()">➕ Tambah Card</button>
+
+    <div id="card-container"></div>
+
+    <div class="popup-form" id="popupForm">
+        <h3>Form Input</h3>
+        <input type="text" placeholder="Nama" />
+        <input type="email" placeholder="Email">
+        <button class="button" onclick="tutupForm()">Tutup</button>
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            const button = document.getElementById("modeButton");
+            if (document.body.classList.contains("dark-mode")) {
+                button.textContent = "☀️ Mode Pagi";
+            } else {
+                button.textContent = "🌙 Mode Malam";
+            }
+        }
+
+        function tambahCard() {
+            const cardContainer = document.getElementById("card-container");
+
+            const card = document.createElement("div");
+            card.className = "card";
+
+            const closeBtn = document.createElement("span");
+            closeBtn.className = "close-btn";
+            closeBtn.textContent = "x";
+            closeBtn.onclick = function () {
+                card.remove();
+                updateCardNumbers();
+            };
+
+            const para = document.createElement("p");
+            card.appendChild(closeBtn);
+            card.appendChild(para);
+            cardContainer.appendChild(card);
+
+            updateCardNumbers();
+        }
+
+        function updateCardNumbers() {
+            const cards = document.querySelectorAll("#card-container .card");
+            cards.forEach((card, index) => {
+                const para = card.querySelector("p");
+                para.innerHTML = `Card ${index + 1}<br><br>
+            Ini card ke-${index + 1}`;
+            });
+        }
+
+        function bukaForm() {
+            document.getElementById("popupForm").style.display = "block";
+        }
+
+        function tutupForm() {
+            document.getElementById("popupForm").style.display = "none";
+        }
+
+        function cekKOM() {
+            const nim = prompt("Masukkan NIM Mahasiswa TI:");
+            if (!nim) {
+                alert("NIM tidak boleh kosong!");
+                return;
+            }
+
+            if (nim) {
+                let kom;
+                const lastTwo = parseInt(nim.slice(-2));
+
+                if (lastTwo % 3 === 1) kom = "A";
+                else if (lastTwo % 3 === 2) kom = "B";
+                else kom = "C";
+
+                alert(`NIM ${nim} berada di KOM ${kom}`);
+            };
+        }
+    </script>
+
+    <button class="button" onclick="bukaForm()">📋 Tampilkan Form</button>
+    <button class="button" onclick="cekKOM()">🔎 Cek KOM Berdasarkan NIM</button>
+</body>
+
+</html>
